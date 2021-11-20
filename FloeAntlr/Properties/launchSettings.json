@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "FloeAntlr": {
+      "commandName": "Project",
+      "commandLineArgs": "test.floe",
+      "workingDirectory": "C:\\Users\\Tristan\\source\\repos\\FloeAntlr\\FloeAntlr"
+    }
+  }
+}
