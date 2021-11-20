@@ -1,8 +1,5 @@
-﻿add(1, 2)[R];
-print(R);
-
-R = 1;
+﻿R = 1;
 add(1, R)[R];
-print(R);
-
+bep(2, X, Y)[Y];
+print(R)[];
 R ! R > 10;

@@ -1,5 +1,7 @@
 ﻿using Antlr4.Runtime.Tree;
+using FloeAntlr.Compiler.CompileOutput;
 using System;
+using System.Collections.Generic;
 using System.IO;
 namespace FloeAntlr
 {
@@ -18,6 +20,7 @@ namespace FloeAntlr
             string contents = System.IO.File.ReadAllText(path);
 
             IParseTree tree = Parser.Parser.GenerateParseTree(contents);
+            List<IStatement> statements = Compiler.Compiler.Compile(tree);
         }
     }
 }

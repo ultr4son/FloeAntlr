@@ -10,6 +10,6 @@ namespace FloeAntlr.Compiler.CompileOutput
     {
         StatementType IStatement.Type => StatementType.REGISTER_ASSIGN;
         public string InputRegister;
-        public string OutputRegister;
+        public string[] OutputRegisters;
     }
 }

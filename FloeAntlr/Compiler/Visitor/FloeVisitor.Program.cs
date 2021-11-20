@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FloeAntlr.Compiler.Visitor
 {
     public class FloeVisitor : floeBaseVisitor<List<IStatement>>
-    {
+    {        
         public override List<IStatement> VisitProgram([NotNull] floeParser.ProgramContext context)
         {
             List<IStatement> statements = new List<IStatement>();
@@ -21,18 +21,6 @@ namespace FloeAntlr.Compiler.Visitor
             }
             return statements;
         }
-
-
-        public override List<IStatement> VisitStatement([NotNull] floeParser.StatementContext context)
-        {
-            return base.VisitStatement(context);
-        }
-
-        public override List<IStatement> VisitArg_list([NotNull] floeParser.Arg_listContext context)
-        {
-            return base.VisitArg_list(context);
-        }
-
         public override List<IStatement> VisitAssign_statement([NotNull] floeParser.Assign_statementContext context)
         {
             AssignStatement statement = new AssignStatement();
@@ -43,15 +31,9 @@ namespace FloeAntlr.Compiler.Visitor
             return new List<IStatement>() { statement };
         }
 
-        public override List<IStatement> VisitBlock_condition([NotNull] floeParser.Block_conditionContext context)
-        {
-            return base.VisitBlock_condition(context);
-        }
-
+     
         public override List<IStatement> VisitBlock_statement([NotNull] floeParser.Block_statementContext context)
-        {
-
-            
+        {            
             floeParser.Block_conditionContext blockCondition = context.block_condition();
             BlockCondition condition = BlockStatement.TokenAsBlockCondition(blockCondition.block_compare().RuleIndex);
 
@@ -69,29 +51,51 @@ namespace FloeAntlr.Compiler.Visitor
 
         public override List<IStatement> VisitConnection_statement([NotNull] floeParser.Connection_statementContext context)
         {
-            string outputName = context.NAME().GetText();
-            context.
+            floeParser.SourceContext source = context.source();
+            string inputName;
+            string[] outputs = { context.NAME().GetText() };
+
+            if (source.RuleIndex == floeParser.RULE_node)
+            {
+                floeParser.NodeContext node = source.node();
+                inputName = node.node_name().GetText();
+                StatementType nodeType;
+
+                switch (inputName)
+                {
+                    case "add":
+                        nodeType = StatementType.NODE_BUILTIN_ADD;
+                        break;
+                    case "subtract":
+                        nodeType = StatementType.NODE_BUILTIN_SUBTRACT;
+                        break;
+                    case "multiply":
+                        nodeType = StatementType.NODE_BUILTIN_MULTIPLY;
+                        break;
+                    case "divide":
+                        nodeType = StatementType.NODE_BUILTIN_DIVIDE;
+                        break;
+                    case "print":
+                        nodeType = StatementType.NODE_BUILTIN_PRINT;
+                        break;
+                    default:
+                        nodeType = StatementType.NODE;
+                        break;
+                }
+
+                string[] args = node.arg_list().GetText().Split(",");
+
+                return new List<IStatement>() { new NodeStatement((NodeType)nodeType) { Name = inputName, Args = args, Outputs = outputs } };
+            }
+            if (source.RuleIndex == floeParser.NAME)
+            {
+                inputName = source.GetText();
+                return new List<IStatement>() { new NodeRegisterStatement() { InputRegister = inputName, OutputRegisters = outputs } };
+            }
+            throw new Exception("Invalid rule index " + source.RuleIndex);
+
         }
 
-        public override List<IStatement> VisitNode([NotNull] floeParser.NodeContext context)
-        {
-            return base.VisitNode(context);
-        }
-
-        public override List<IStatement> VisitNode_name([NotNull] floeParser.Node_nameContext context)
-        {
-            return base.VisitNode_name(context);
-        }
-
-       
-        public override List<IStatement> VisitSource([NotNull] floeParser.SourceContext context)
-        {
-            return base.VisitSource(context);
-        }
-
-        public override List<IStatement> VisitValue([NotNull] floeParser.ValueContext context)
-        {
-            return base.VisitValue(context);
-        }
+        
     }
 }

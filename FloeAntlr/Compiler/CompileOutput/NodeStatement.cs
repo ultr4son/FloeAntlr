@@ -16,7 +16,7 @@ namespace FloeAntlr.Compiler.CompileOutput
         StatementType IStatement.Type => type;
 
         public string Name;
-        List<string> Args;
-        List<string> Outputs;
+        public string[] Args;
+        public string[] Outputs;
     }
 }

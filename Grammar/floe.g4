@@ -8,15 +8,14 @@ statement
 	: connection_statement 
 	| block_statement
 	| assign_statement
-	| node
 	;
 
 connection_statement
-	: source L_BRACKET NAME R_BRACKET
+	: source L_BRACKET NAME? R_BRACKET
 	;
 
 source
-	: value 
+	:NAME
 	| node
 	;
 
@@ -71,12 +70,12 @@ GTE: '>=';
 LT: '<';
 LTE: '<=';
 
-PLUS: '+';
-MINUS: '-';
-MULTIPLY: '*';
-DIVIDE: '/';
-MODULO: '%';
-PRINT: 'print';
+fragment PLUS: 'add';
+fragment MINUS: 'subtract';
+fragment MULTIPLY: 'multiply';
+fragment DIVIDE: 'divide';
+fragment MODULO: 'mod';
+fragment PRINT: 'print';
 
 RESERVED: PLUS | MINUS | MULTIPLY | DIVIDE | MODULO | PRINT;
 BLOCKS: '!';
