@@ -50,14 +50,27 @@ namespace FloeAntlr.Compiler.Visitor
 
         public override List<IStatement> VisitBlock_statement([NotNull] floeParser.Block_statementContext context)
         {
-            BlockStatement statement = new BlockStatement();
 
-            statement.BlockRegister = context.NAME().GetText() ;
+            
+            floeParser.Block_conditionContext blockCondition = context.block_condition();
+            BlockCondition condition = BlockStatement.TokenAsBlockCondition(blockCondition.block_compare().RuleIndex);
+
+            return new List<IStatement>() { 
+                new BlockStatement() { 
+                    BlockRegister = context.NAME().GetText(), 
+                    Condition = condition, 
+                    LeftValue = context.block_condition().value()[0].GetText(), 
+                    RightValue = context.block_condition().value()[1].GetText() 
+                } 
+            };
+            
+
         }
 
         public override List<IStatement> VisitConnection_statement([NotNull] floeParser.Connection_statementContext context)
         {
-            return base.VisitConnection_statement(context);
+            string outputName = context.NAME().GetText();
+            context.
         }
 
         public override List<IStatement> VisitNode([NotNull] floeParser.NodeContext context)

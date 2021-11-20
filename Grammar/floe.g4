@@ -44,8 +44,11 @@ block_statement
 	: NAME BLOCKS block_condition
 	;
 
+block_compare
+	:EQ | GT | GTE | LT | LTE
+	;
 block_condition
-	: value (EQ | GT | GTE | LT | LTE) value
+	: value block_compare value
 	;
 
 assign_statement

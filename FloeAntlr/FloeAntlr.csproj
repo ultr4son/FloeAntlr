@@ -13,9 +13,4 @@
     <ProjectReference Include="..\Grammar\Grammar.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Visitor\" />
-  </ItemGroup>
-
 </Project>

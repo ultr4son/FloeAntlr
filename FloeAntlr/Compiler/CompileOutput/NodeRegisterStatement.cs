@@ -9,7 +9,7 @@ namespace FloeAntlr.Compiler.CompileOutput
     public class NodeRegisterStatement : IStatement
     {
         StatementType IStatement.Type => StatementType.REGISTER_ASSIGN;
-        string InputRegister;
-        string OutputRegister;
+        public string InputRegister;
+        public string OutputRegister;
     }
 }
